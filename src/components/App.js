@@ -7,18 +7,41 @@ function App() {
   const [page, setPage] = useState("List");
   const [questions, setQuestions] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch("http://localhost:4000/questions")
-    .then((r)=>r.json())
-    .then(data=>{
-      setQuestions(data)
+      .then((r) => r.json())
+      .then((data) => {
+        setQuestions(data);
+      });
+  }, []);
+
+  function addQuestion(newQuestion){
+    const updatedQuestions = [...questions, newQuestion]
+    setQuestions(updatedQuestions);
+  }
+
+  function deleteTodo(id){
+    const updatedQuestions = questions.filter(questions => questions.id !== id)
+    setQuestions(updatedQuestions)
+  }
+
+  function updateQuestion(id, newAnswer){
+    const updatedQuestions = questions.map(questions => {
+      if(questions.id === id){
+        return{...questions, newAnswer}
+      }else{
+        return questions
+      }
     })
-  }, [questions]);
+    setQuestions(updatedQuestions);
+  }
+
+  console.log(questions)
 
   return (
     <main>
       <AdminNavBar onChangePage={setPage} />
-      {page === "Form" ? <QuestionForm setQuestions={setQuestions}/> : <QuestionList questions={questions} setQuestions={setQuestions}/>}
+      {page === "Form" ? <QuestionForm onAddQuestion={addQuestion}/> : <QuestionList questions={questions} onDeleteTodo = {deleteTodo} onUpdateQuestion={updateQuestion}/>}
     </main>
   );
 }
