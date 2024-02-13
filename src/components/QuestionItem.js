@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 function QuestionItem({ question, onDeleteTodo, onUpdateQuestion }) {
   const { id, prompt, answers, correctIndex } = question;
-  // const [currentCorrectIndex, setCurrentCorrectIndex] = useState(correctIndex);
 
 
   function handleUpdate(newAnswer){
-    console.log(newAnswer)
     fetch(`http://localhost:4000/questions/${id}`,{
       method: "PATCH",
       headers: {
@@ -16,18 +14,20 @@ function QuestionItem({ question, onDeleteTodo, onUpdateQuestion }) {
     })
     .then((r)=>r.json())
     .then((updatedAnswer) => {
-      console.log(updatedAnswer)
       onUpdateQuestion(updatedAnswer.id, updatedAnswer.correctIndex)
     })
   }
 
-  function handleDelete(){
+  function handleDelete() {
     fetch(`http://localhost:4000/questions/${id}`, {
       method: "DELETE",
     })
-    .then(()=>console.log("deleted"))
-    .catch((error)=>console.log(error("Error deleting question: ", error)))
-    onDeleteTodo(id)
+      .then(() => {
+        onDeleteTodo(id);
+      })
+      .catch((error) =>
+        console.log("Error deleting question: ", error)
+      );
   }
 
   const options = answers.map((answer, index) => (

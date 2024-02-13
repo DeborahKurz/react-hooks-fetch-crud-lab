@@ -20,9 +20,9 @@ function App() {
     setQuestions(updatedQuestions);
   }
 
-  function deleteTodo(id){
-    const updatedQuestions = questions.filter(questions => questions.id !== id)
-    setQuestions(updatedQuestions)
+  function deleteTodo(id) {
+    const updatedQuestions = questions.filter(question => question.id !== id);
+    setQuestions(updatedQuestions);
   }
 
   function updateQuestion(id, newAnswer){
